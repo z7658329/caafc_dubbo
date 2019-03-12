@@ -14,12 +14,12 @@
         <dependency>
             <artifactId>common-api</artifactId>
             <groupId>com.caafc.service</groupId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.caafc.service</groupId>
             <artifactId>file-tool</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

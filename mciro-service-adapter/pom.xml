@@ -11,5 +11,12 @@
 
     <artifactId>mciro-service-adapter</artifactId>
 
+    <dependencies>
+        <dependency>
+            <artifactId>common-api</artifactId>
+            <groupId>com.caafc.service</groupId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
