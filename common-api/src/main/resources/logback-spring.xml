@@ -5,7 +5,7 @@
 
 	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
 	<springProperty name="appName" scope="context"  source="dubbo.application.name"/>
-	<springProperty name="logHome" scope="context"  source="logger.path" defaultValue="../../"/>
+	<springProperty name="logHome" scope="context"  source="logger.path" defaultValue="../../../"/>
 	<springProperty name="redis"   scope="context"  source="logger.redis.host" defaultValue="127.0.0.1"/>
 
 	<property name="LOG_PATH" value="${logHome}/${appName}/${appName}-%d{yyyy-MM-dd}.log" />
