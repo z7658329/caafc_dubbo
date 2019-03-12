@@ -1,0 +1,26 @@
+dubbo:
+  application:
+    name: elasticsearch
+    version: 1.0.0
+  protocol:
+    name: dubbo
+    port: 20880
+  provider:
+    timeout: 5000
+  consumer:
+    timeout: 5000
+  registry:
+    address: zookeeper://10.5.2.74:2181
+  monitor:
+    address: 10.5.2.27:7070
+server:
+  port: 8104
+spring:
+  data:
+    elasticsearch:
+      cluster-name: es_cluster
+      cluster-nodes: 10.5.2.74:9300
+      repositories:
+        enabled: true
+
+

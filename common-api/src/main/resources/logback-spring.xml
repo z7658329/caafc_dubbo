@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+	<springProperty name="appName" scope="context"  source="dubbo.application.name"/>
+	<springProperty name="logHome" scope="context"  source="logger.path" defaultValue="../../"/>
+	<springProperty name="redis"   scope="context"  source="logger.redis.host" defaultValue="127.0.0.1"/>
+
+	<property name="LOG_PATH" value="${logHome}/${appName}/${appName}-%d{yyyy-MM-dd}.log" />
+
+	<property name="LOG_PATTERN"  value="%clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){magenta} %clr(%logger{39}-%M-%L){cyan} %clr(%X{traceId})  %clr(%X{userId}) %clr([-----]){green} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>/>
+
+	<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+	<!--<property name="LOG_PATTERN_FILE" value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${PID:-} %-5level %logger{50}  - %msg%n" />-->
+
+	<!--<property name="LOG_PATTERN_LOGSTACH" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr([${appName:-},%X{X-B3-TraceId:-},%X{X-B3-SpanId:-},%X{X-Span-Export:-}]){yellow} %clr(${PID:- }){magenta} %clr(-&#45;&#45;){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %L %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>-->
+
+	<!--<conversionRule conversionWord="type" converterClass="com.micro.config.logger.LogIpConfig" />-->
+
+	<!-- 控制台输出 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+			<charset>UTF8</charset>
+		</encoder>
+	</appender>
+
+	<!-- 按照每天生成日志文件 -->
+	<appender name="FILE"  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名-->
+			<FileNamePattern>${LOG_PATH}</FileNamePattern>
+			<!--日志文件保留天数-->
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+			<charset>UTF8</charset>
+		</encoder>
+		<!--日志文件最大的大小-->
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>100MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<appender name="LOGSTASH" class="com.cwbase.logback.RedisAppender">
+		<!--<host>${redis}</host>-->
+		<host>10.5.2.27</host>
+		<port>6379</port>
+		<key>logstash</key>
+		<password>123456</password>
+		<database>0</database>
+		<additionalField>
+			<key>service</key>
+			<value>${appName}</value>
+		</additionalField>
+		<additionalField>
+			<key>IP</key>
+			<value>@{IP}</value>
+		</additionalField>
+		<additionalField>
+			<key>traceId</key>
+			<value>@{traceId}</value>
+		</additionalField>
+		<additionalField>
+			<key>userId</key>
+			<value>@{userId}</value>
+		</additionalField>
+		<additionalField>
+			<key>code</key>
+			<value>@{code}</value>
+		</additionalField>
+		<additionalField>
+			<key>channelId</key>
+			<value>@{channelId}</value>
+		</additionalField>
+		<additionalField>
+			<key>requestPath</key>
+			<value>@{requestPath}</value>
+		</additionalField>
+		<additionalField>
+			<key>method</key>
+			<value>@{method}</value>
+		</additionalField>
+		<additionalField>
+			<key>cost</key>
+			<value>@{cost}</value>
+		</additionalField>
+	</appender>
+	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+		<discardingThreshold>0</discardingThreshold>
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+		<queueSize>512000</queueSize>
+		<appender-ref ref="LOGSTASH" />
+	</appender>
+
+	<root level="INFO">
+		<springProfile name="test,itest,uat,prod">
+			<appender-ref ref="FILE"/>
+			<appender-ref ref="ASYNC" />
+		</springProfile>
+		<springProfile name="dev">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="ASYNC" />
+		</springProfile>
+	</root>
+</configuration>
