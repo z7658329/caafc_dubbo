@@ -36,7 +36,7 @@ public class PdfOperator {
         try {
             doc = PDDocument.load(new File(filePath));
         }catch (Exception e){
-             log.error(LG.N(),e);
+             log.error(LG.E(),e);
         }
     }
 
@@ -53,7 +53,7 @@ public class PdfOperator {
             textStripper.setEndPage(num);
             return textStripper.getText(doc);
         } catch (IOException e) {
-            log.error(LG.N(),e);
+            log.error(LG.E(),e);
         }
         return null;
     }
@@ -62,7 +62,7 @@ public class PdfOperator {
         try {
             doc.close();
         } catch (IOException e) {
-            log.error(LG.N(),e);
+            log.error(LG.E(),e);
         }
     }
 

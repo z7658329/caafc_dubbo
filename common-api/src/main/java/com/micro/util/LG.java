@@ -19,7 +19,7 @@ public class LG {
         return Thread.currentThread() .getStackTrace()[2].getMethodName()+PARA;
     }
     public static String E(){
-        return MARK;
+        return Thread.currentThread() .getStackTrace()[2].getMethodName()+MARK;
     }
     public static void printLine(){
         System.out.println(LINE);

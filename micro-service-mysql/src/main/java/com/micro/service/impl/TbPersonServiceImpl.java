@@ -27,7 +27,7 @@ public class TbPersonServiceImpl implements TbPersonService {
 
     @Override
     public TbPerson selTbPersonId(String id) {
-        log.info(LG.N()+"------------------------");
+        log.info(LG.N(),"------------------------");
         return tbPersonJpa.getOne(id);
     }
 
