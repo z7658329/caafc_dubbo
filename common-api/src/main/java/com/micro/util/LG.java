@@ -13,11 +13,14 @@ package com.micro.util;
 public class LG {
 
     private static String MARK="=======>";
+    private static String PARA="=======>{}";
     private static String LINE="--------------------------------------------";
     public static String N(){
-        return Thread.currentThread() .getStackTrace()[2].getMethodName()+MARK;
+        return Thread.currentThread() .getStackTrace()[2].getMethodName()+PARA;
     }
-
+    public static String E(){
+        return MARK;
+    }
     public static void printLine(){
         System.out.println(LINE);
     }
