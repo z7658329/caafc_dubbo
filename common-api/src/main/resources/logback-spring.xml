@@ -47,7 +47,7 @@
 
 	<appender name="LOGSTASH" class="com.cwbase.logback.RedisAppender">
 		<!--<host>${redis}</host>-->
-		<host>10.5.2.27</host>
+		<host>10.2.5.52</host>
 		<port>6379</port>
 		<key>logstash</key>
 		<password>123456</password>
@@ -102,7 +102,7 @@
 			<appender-ref ref="FILE"/>
 			<appender-ref ref="ASYNC" />
 		</springProfile>
-		<springProfile name="dev">
+		<springProfile name="dev,test">
 			<appender-ref ref="CONSOLE" />
 			<appender-ref ref="ASYNC" />
 		</springProfile>

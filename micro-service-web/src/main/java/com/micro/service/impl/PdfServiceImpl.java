@@ -8,6 +8,7 @@ import com.micro.api.web.PdfService;
 import com.micro.api.web.model.request.PdfModel;
 import com.micro.response.global.BaseResponse;
 import com.micro.util.PdfOperator;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +24,8 @@ import org.slf4j.LoggerFactory;
  */
 
 @Service
+@Slf4j
 public class PdfServiceImpl implements PdfService {
-
-    private static Logger logger=LoggerFactory.getLogger(PdfServiceImpl.class);
 
     @Reference(check = false)
     private InstitutionService institutionService;

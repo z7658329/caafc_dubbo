@@ -1,5 +1,6 @@
 package com.micro.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -22,9 +23,9 @@ import java.util.Iterator;
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
+@Slf4j
 public class PdfOperator {
 
-    private static Logger logger =LoggerFactory.getLogger(PdfOperator.class);
     private PDDocument doc;
 
     public PdfOperator(PDDocument doc) {
@@ -35,7 +36,7 @@ public class PdfOperator {
         try {
             doc = PDDocument.load(new File(filePath));
         }catch (Exception e){
-             logger.error(LG.N(),e);
+             log.error(LG.N(),e);
         }
     }
 
@@ -52,7 +53,7 @@ public class PdfOperator {
             textStripper.setEndPage(num);
             return textStripper.getText(doc);
         } catch (IOException e) {
-            logger.error(LG.N(),e);
+            log.error(LG.N(),e);
         }
         return null;
     }
@@ -61,7 +62,7 @@ public class PdfOperator {
         try {
             doc.close();
         } catch (IOException e) {
-            logger.error(LG.N(),e);
+            log.error(LG.N(),e);
         }
     }
 
@@ -75,14 +76,14 @@ public class PdfOperator {
 
     public static void main(String[] args) {
         PdfOperator pdfOperator=new PdfOperator("C:\\Users\\lenovo\\Desktop\\长安金融\\rule\\长安金融发〔2018〕96号关于修订并印发《采购管理办法》的通知.pdf");
-        logger.info(LG.N(),pdfOperator.getPageNum());
+        log.info(LG.N(),pdfOperator.getPageNum());
         System.out.println(pdfOperator.getPageContent(1));
         LG.printLine();
         System.out.println(pdfOperator.getPageContent(2));
         LG.printLine();
         System.out.println(pdfOperator.getPageContent(3));
         LG.printLine();
-        logger.info(LG.N(),pdfOperator.getPageContent(4));
+        log.info(LG.N(),pdfOperator.getPageContent(4));
         LG.printLine();
     }
 }

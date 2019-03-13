@@ -4,7 +4,7 @@ dubbo:
     version: 1.0.0
   protocol:
     name: dubbo
-    port: 20880
+    port: 20881
   provider:
     timeout: 5000
   consumer:
@@ -14,7 +14,7 @@ dubbo:
   monitor:
     address: 10.5.2.27:7070
 server:
-  port: 8104
+  port: 8101
 spring:
   data:
     elasticsearch:
@@ -22,5 +22,8 @@ spring:
       cluster-nodes: 10.5.2.74:9300
       repositories:
         enabled: true
-
+logger:
+  redis:
+    host: 10.5.2.56
+  path: /home/jolin/log
 

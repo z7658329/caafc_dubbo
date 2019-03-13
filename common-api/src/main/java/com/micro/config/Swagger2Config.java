@@ -12,7 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Copyright (C),长安汽车金融有限公司
- * FileName:  com.example.demo
+ * FileName:  Swagger2Config
  * Author:   utils
  * Date:     2018/5/20
  * Description:
@@ -37,7 +37,7 @@ public class Swagger2Config {
     private ApiInfo apiInfo() {// 创建API的基本信息，这些信息会在Swagger UI中进行显示
         return new ApiInfoBuilder()
                 .title("Spring Boot中使用Swagger2构建RESTful APIs")// API 标题
-                .description("rdcloud-jpa提供的RESTful APIs")// API描述
+                .description("HHC RESTful APIs")// API描述
                 .version("1.0")// 版本号
                 .build();
     }

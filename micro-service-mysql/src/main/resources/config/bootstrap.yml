@@ -2,4 +2,5 @@ spring:
   application:
     name: mysql
   profiles:
-    active: dev
+    active: test
+
