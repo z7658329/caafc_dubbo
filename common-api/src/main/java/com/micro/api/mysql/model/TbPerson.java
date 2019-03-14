@@ -37,9 +37,9 @@ public class TbPerson implements Serializable {
 
     private String enable;
 
-    private Date create_time;
+    private Date createTime;
 
-    private Date update_time;
+    private Date updateTime;
 
 }
 

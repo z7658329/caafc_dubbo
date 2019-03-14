@@ -1,6 +1,7 @@
 package com.micro.api.mysql.model;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
+@Data
 public class PageTable<T> implements Serializable {
 
     @ApiModelProperty(value="总页数")
@@ -25,27 +27,4 @@ public class PageTable<T> implements Serializable {
 
     List<T> models;
 
-    public Integer getTotalPages() {
-        return totalPages;
-    }
-
-    public void setTotalPages(Integer totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    public Long getTotalElements() {
-        return totalElements;
-    }
-
-    public void setTotalElements(Long totalElements) {
-        this.totalElements = totalElements;
-    }
-
-    public List<T> getModels() {
-        return models;
-    }
-
-    public void setModels(List<T> models) {
-        this.models = models;
-    }
 }
