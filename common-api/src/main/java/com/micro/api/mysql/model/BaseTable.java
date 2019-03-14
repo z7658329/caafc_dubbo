@@ -30,7 +30,7 @@ public class BaseTable<T> implements Serializable {
     private String order;
 
 
-    @ApiModelProperty(value="升降序",example="0",notes = "0或不传 降序，1 升序")
+    @ApiModelProperty(value="升降序0或不传 降序，1 升序",example="0")
     private String ascDesc;
 
 
