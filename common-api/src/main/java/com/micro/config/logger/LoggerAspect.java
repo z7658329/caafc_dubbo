@@ -2,6 +2,7 @@ package com.micro.config.logger;
 
 import com.alibaba.fastjson.JSON;
 import com.micro.constant.TraceConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -29,9 +30,9 @@ import java.util.UUID;
  */
 @Component
 @Aspect
+@Slf4j
 public class LoggerAspect {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
     private long paramSize = 2000;
     private int viewSize=400;
     private String seg="--------------------------------------";
@@ -78,7 +79,7 @@ public class LoggerAspect {
         MDC.put("requestPath",requestPath);
         MDC.put("method",method);
         MDC.put("IP",LogIpConfig.getIp());
-        logger.info("========>http_request  requestPath:{},userId:{},code:{},channelId:{},method:{},requestParams:{}", requestPath,userId, code, channelId,   method, requestParams);
+        log.info("========>http_request  requestPath:{},userId:{},code:{},channelId:{},method:{},requestParams:{}", requestPath,userId, code, channelId,   method, requestParams);
 
         long start = System.currentTimeMillis();
         Object result = joinPoint.proceed();
@@ -89,7 +90,7 @@ public class LoggerAspect {
         if(resultStr.length()> paramSize){
             resultStr = resultStr.substring(0, viewSize) + seg + resultStr.substring(resultStr.length() - viewSize);
         }
-        logger.info("========>http_response:{},userId:{},cost:{}ms",resultStr, userId,cost);
+        log.info("========>http_response:{},userId:{},cost:{}ms",resultStr, userId,cost);
         MDC.clear();
         return result;
     }

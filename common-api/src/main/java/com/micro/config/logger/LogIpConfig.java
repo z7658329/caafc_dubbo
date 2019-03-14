@@ -3,6 +3,7 @@ package com.micro.config.logger;
 import ch.qos.logback.classic.pattern.ClassicConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import com.micro.util.LG;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +20,9 @@ import java.net.UnknownHostException;
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
+@Slf4j
 public class LogIpConfig extends ClassicConverter {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogIpConfig .class);
     private static String IP=getIp();
 
     @Override
@@ -33,7 +34,7 @@ public class LogIpConfig extends ClassicConverter {
         try {
             return InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            logger.error(LG.N(), e);
+            log.error(LG.N(), e);
         }
         return null;
     }

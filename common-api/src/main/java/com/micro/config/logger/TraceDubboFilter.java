@@ -4,6 +4,7 @@ import com.alibaba.dubbo.common.extension.Activate;
 import com.alibaba.dubbo.rpc.*;
 import com.alibaba.fastjson.JSON;
 import com.micro.constant.TraceConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -21,10 +22,10 @@ import java.util.UUID;
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
+@Slf4j
 @Activate(group = { Constants.PROVIDER, Constants.CONSUMER })
 public class TraceDubboFilter implements Filter {
 
-    private  static Logger logger = LoggerFactory.getLogger(TraceDubboFilter.class);
     private long paramSize = 2000;
     private int viewSize=400;
     private String seg="--------------------------------------";
@@ -42,6 +43,7 @@ public class TraceDubboFilter implements Filter {
             return result;
         }else {
             MDC.put(TraceConstant.TraceId, traceId);
+            MDC.put("requestPath",invocation.getMethodName());
             MDC.put("IP",LogIpConfig.getIp());
             StringBuilder paramsKVSB = new StringBuilder();
             Object[]params=invocation.getArguments();
@@ -58,14 +60,14 @@ public class TraceDubboFilter implements Filter {
             }
             String requestParams = paramsKVSB.toString();
             String requestPath=invocation.getMethodName();
-            logger.info("========>dubbo_request  requestPath:{},requestParams:{}", requestPath, requestParams);
+            log.info("========>dubbo_request  requestPath:{},requestParams:{}", requestPath, requestParams);
             long start = System.currentTimeMillis();
             Result result=invoker.invoke(invocation);
             String resultStr = JSON.toJSONString(result.getValue());
             long end = System.currentTimeMillis();
             Long cost=end-start;
             MDC.put("cost",cost.toString());
-            logger.info("========>dubbo_response:{},cost:{}ms",resultStr,cost);
+            log.info("========>dubbo_response:{},cost:{}ms",resultStr,cost);
             return result;
         }
 
