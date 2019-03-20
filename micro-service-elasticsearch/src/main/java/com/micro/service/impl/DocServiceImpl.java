@@ -1,11 +1,11 @@
 package com.micro.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
-import com.micro.api.elasticsearch.InstitutionService;
-import com.micro.api.elasticsearch.model.Institution;
+import com.micro.api.elasticsearch.DocService;
+import com.micro.api.elasticsearch.model.Doc;
 import com.micro.api.mysql.model.BaseTable;
 import com.micro.api.mysql.model.PageTable;
-import com.micro.dao.InstitutionRepository;
+import com.micro.dao.DocRepository;
 import com.micro.util.TableUtil;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 
 /**
@@ -26,40 +27,39 @@ import org.springframework.data.domain.Sort;
  * 作者姓名           修改时间           版本号              描述
  */
 @Service
-public class InstitutionServiceImpl implements InstitutionService {
+public class DocServiceImpl implements DocService {
 
     @Autowired
-    private InstitutionRepository institutionRepository;
-
+    private DocRepository docRepository;
 
     @Override
-    public Institution save(Institution institution){
-        return institutionRepository.save(institution);
+    public Doc save(Doc doc){
+        return docRepository.save(doc);
     }
 
     @Override
     public int delete(String id){
-        institutionRepository.deleteById(id);
+        docRepository.deleteById(id);
         return 0;
     }
 
     @Override
-    public Institution update(Institution institution){
-        return institutionRepository.save(institution);
+    public Doc update(Doc doc){
+        return docRepository.save(doc);
     }
 
     @Override
-    public Institution getOne(String id){
-        Institution institution = institutionRepository.findById(id).get();
-       return institution;
+    public Doc getOne(String id){
+        Doc doc = docRepository.findById(id).get();
+       return doc;
     }
 
     @Override
-    public PageTable<Institution> searchString(BaseTable<String> baseTable){
+    public PageTable<Doc> searchString(BaseTable<String> baseTable){
         Sort sort=new Sort(Sort.Direction.DESC,"pageNum");
         Pageable pageable = PageRequest.of(baseTable.getPageNum(), baseTable.getPageSize(),sort);
         QueryStringQueryBuilder builder = new QueryStringQueryBuilder(baseTable.getModel());
-        Page<Institution> page = institutionRepository.search(builder,pageable);
+        Page<Doc> page = docRepository.search(builder,pageable);
         return TableUtil.copyTableList(page);
     }
 }

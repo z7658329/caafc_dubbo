@@ -1,7 +1,9 @@
 package com.micro.response.global;
 
 
-public class BaseResponse {
+import java.io.Serializable;
+
+public class BaseResponse implements Serializable {
     /**
      * 返回码
      */

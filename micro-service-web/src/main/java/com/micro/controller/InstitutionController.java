@@ -11,7 +11,6 @@ package com.micro.controller;
  * 作者姓名           修改时间           版本号              描述
  */
 
-
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.api.elasticsearch.InstitutionService;
 import com.micro.api.elasticsearch.model.Institution;
@@ -28,31 +27,31 @@ public class InstitutionController {
     private InstitutionService institutionService;
 
 
-    @PostMapping("/save")
+    @PostMapping("/insert")
     public Institution save(@RequestBody Institution institution){
         return institutionService.save(institution);
     }
 
-    @DeleteMapping("/delete")
-    public String delete(@RequestParam String id){
-        institutionService.delete(id);
-        return "success";
+    @DeleteMapping("/delete/id")
+    public int delete(@RequestParam String id){
+        return institutionService.delete(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/id")
     public Institution update(@RequestBody Institution institution){
         return institutionService.save(institution);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/select/{id}")
     public Institution getOne(@PathVariable String id){
         Institution institution = institutionService.getOne(id);
         return institution;
     }
 
-    @PostMapping("/searchString/get")
-    PageTable<Institution> searchString(@RequestBody BaseTable<String> baseTable){
+    @PostMapping("/select/page/get")
+    public PageTable<Institution> searchString(@RequestBody BaseTable<String> baseTable){
         return institutionService.searchString(baseTable);
     }
+
 
 }

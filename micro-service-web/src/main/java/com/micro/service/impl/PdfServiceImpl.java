@@ -2,15 +2,18 @@ package com.micro.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.micro.api.elasticsearch.DocService;
 import com.micro.api.elasticsearch.InstitutionService;
+import com.micro.api.elasticsearch.model.Doc;
 import com.micro.api.elasticsearch.model.Institution;
+import com.micro.api.mysql.TbPdfModelService;
+import com.micro.api.mysql.model.TbPdfModel;
 import com.micro.api.web.PdfService;
 import com.micro.api.web.model.request.PdfModel;
 import com.micro.response.global.BaseResponse;
 import com.micro.util.PdfOperator;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 
 /**
  * Copyright (C),长安汽车金融有限公司
@@ -30,17 +33,32 @@ public class PdfServiceImpl implements PdfService {
     @Reference(check = false)
     private InstitutionService institutionService;
 
+    @Reference(check = false)
+    private DocService docService;
+
+    @Reference(check = false)
+    private TbPdfModelService tbPdfModelService;
+
     @Override
     public BaseResponse uploadPdf(PdfModel pdfModel){
-        PdfOperator pdfOperator =new  PdfOperator(pdfModel.getPath());
+        TbPdfModel tbPdfModel=new TbPdfModel();
+        BeanUtils.copyProperties(pdfModel,tbPdfModel);
+        tbPdfModel=tbPdfModelService.insert(tbPdfModel);
+        PdfOperator pdfOperator =new PdfOperator(pdfModel.getFilePath());
+        StringBuffer stringBuffer=new StringBuffer();
         for(int i=1;i<=pdfOperator.getPageNum();i++){
             String pageContent = pdfOperator.getPageContent(i);
             Institution institution=new Institution();
-            institution.setName(pdfModel.getName());
             institution.setPageNum(i);
-            institution.setContent(pageContent);
+            institution.setPageContent(pageContent);
+            institution.setPdfId(tbPdfModel.getId());
             institutionService.save(institution);
+            stringBuffer.append(pageContent+"\r\n");
         }
-        return BaseResponse.create(null);
+        Doc doc=new Doc();
+        BeanUtils.copyProperties(tbPdfModel,doc);
+        doc.setContent(stringBuffer.toString());
+        docService.save(doc);
+        return BaseResponse.create(tbPdfModel);
     }
 }

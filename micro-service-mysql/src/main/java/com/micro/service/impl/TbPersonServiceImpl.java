@@ -62,7 +62,7 @@ public class TbPersonServiceImpl implements TbPersonService {
 
     @Override
     public TbPerson updateById(TbPerson tbPerson) {
-        if(tbPerson.getCreateTime()==null){
+        if(tbPerson.getUpdateTime()==null){
             tbPerson.setUpdateTime(new Date());
         }
         TbPerson source =tbPersonJpa.getOne(tbPerson.getId());
@@ -81,7 +81,10 @@ public class TbPersonServiceImpl implements TbPersonService {
 
     @Override
     public Integer deleteById(String id) {
-        tbPersonJpa.deleteById(id);
+        TbPerson tbPerson = selectById(id);
+        tbPerson.setIsDelete(1);
+        tbPerson.setUpdateTime(new Date());
+        tbPersonJpa.saveAndFlush(tbPerson);
         return 1;
     }
 
@@ -138,6 +141,7 @@ public class TbPersonServiceImpl implements TbPersonService {
         TbPersonSpec( BaseTable<TbPerson> baseTable){
             this.baseTable=baseTable;
         }
+
         @Override
         public Predicate toPredicate(Root<TbPerson> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
             return TableUtil.toPredicate(baseTable,root,criteriaQuery,criteriaBuilder);

@@ -20,6 +20,7 @@ spring:
     elasticsearch:
       cluster-name: es_cluster
       cluster-nodes: 10.5.2.74:9300
+      cluster-high-nodes: 10.5.2.74:9200
       repositories:
         enabled: true
 logger:

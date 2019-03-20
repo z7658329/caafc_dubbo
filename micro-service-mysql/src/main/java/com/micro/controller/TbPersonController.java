@@ -1,5 +1,6 @@
 package com.micro.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.api.mysql.TbPersonService;
 import com.micro.api.mysql.model.BaseTable;
 import com.micro.api.mysql.model.PageTable;
@@ -25,7 +26,7 @@ import java.util.List;
 @RequestMapping("/mysql")
 public class TbPersonController {
 
-    @Autowired
+    @Reference(check = false)
     private TbPersonService tbPersonService;
 
 

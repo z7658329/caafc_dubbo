@@ -1,5 +1,6 @@
 package com.micro.controller;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.api.web.PdfService;
 import com.micro.api.web.model.request.PdfModel;
 import com.micro.response.global.BaseResponse;
@@ -21,8 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WebController {
 
-    @Autowired
+    @Reference(check = false)
     private PdfService pdfService;
+
     @PostMapping("/pdf/upload")
     public BaseResponse uploadPdf(@RequestBody PdfModel pdfModel){
        return pdfService.uploadPdf(pdfModel) ;

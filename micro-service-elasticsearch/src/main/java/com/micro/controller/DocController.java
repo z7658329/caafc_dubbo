@@ -1,0 +1,56 @@
+package com.micro.controller;
+
+/**
+ * Copyright (C),长安汽车金融有限公司
+ * FileName:  com.micro.controller
+ * Author:   hhc
+ * Date:     2018/11/22
+ * Description:
+ * History:
+ * <author>          <time>          <version>          <desc>
+ * 作者姓名           修改时间           版本号              描述
+ */
+
+import com.micro.api.elasticsearch.DocService;
+import com.micro.api.elasticsearch.model.Doc;
+import com.micro.api.mysql.model.BaseTable;
+import com.micro.api.mysql.model.PageTable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/doc")
+public class DocController {
+
+    @Autowired
+    private DocService docService;
+
+
+    @PostMapping("/insert")
+    public Doc save(@RequestBody Doc doc){
+        return docService.save(doc);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public int delete(@PathVariable String id){
+        return docService.delete(id);
+    }
+
+    @PutMapping("/update/id")
+    public Doc update(@RequestBody Doc doc){
+        return docService.save(doc);
+    }
+
+    @GetMapping("/select/{id}")
+    public Doc getOne(@PathVariable String id){
+        Doc doc = docService.getOne(id);
+        return doc;
+    }
+
+    @PostMapping("/select/page/get")
+    public PageTable<Doc> searchString(@RequestBody BaseTable<String> baseTable){
+        return docService.searchString(baseTable);
+    }
+
+
+}

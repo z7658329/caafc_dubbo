@@ -1,14 +1,15 @@
 package com.micro.api.elasticsearch.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 
 /**
  * Copyright (C),长安汽车金融有限公司
- * FileName:  com.micro.model
+ * FileName:  com.micro.api.elasticsearch.model
  * Author:   hhc
- * Date:     2018/11/22
+ * Date:     2019/3/18
  * Description:
  * History:
  * <author>          <time>          <version>          <desc>
@@ -17,12 +18,16 @@ import java.io.Serializable;
 @Data
 public class Institution implements Serializable {
 
-
     private String id;
-    private String name;
-    private Integer pageNum;
-    private String content;
-    private String description;
 
+    @ApiModelProperty(value = "pdf id ", example = "1")
+    private String PdfId;
+
+
+    @ApiModelProperty(value = "页码 ", example = "1")
+    private Integer pageNum;
+
+    @ApiModelProperty(value = "页码内容", example = "1")
+    private String pageContent;
 
 }
