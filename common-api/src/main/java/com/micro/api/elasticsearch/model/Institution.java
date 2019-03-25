@@ -30,4 +30,12 @@ public class Institution implements Serializable {
     @ApiModelProperty(value = "页码内容", example = "1")
     private String pageContent;
 
+    @Override
+    public String toString() {
+        return "Institution{" +
+                "id='" + id + '\'' +
+                ", PdfId='" + PdfId + '\'' +
+                ", pageNum=" + pageNum +
+                '}';
+    }
 }

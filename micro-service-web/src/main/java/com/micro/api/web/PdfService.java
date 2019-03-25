@@ -14,5 +14,8 @@ import com.micro.response.global.BaseResponse;
  * 作者姓名           修改时间           版本号              描述
  */
 public interface PdfService {
+
     BaseResponse uploadPdf(PdfModel pdfModel);
+
+    BaseResponse updatePdf(PdfModel pdfModel);
 }

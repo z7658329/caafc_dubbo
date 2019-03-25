@@ -9,6 +9,7 @@ dubbo:
     timeout: 5000
   consumer:
     timeout: 5000
+    retries: -1
   registry:
     address: zookeeper://10.5.2.74:2181
 server:
@@ -31,7 +32,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create #ddl-auto:设为update表示每次都不会重新建表 create create-drop  validate
+      ddl-auto: update #ddl-auto:设为update表示每次都不会重新建表 create create-drop  validate
     show-sql: false
     properties:
       hibernate:

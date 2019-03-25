@@ -28,29 +28,27 @@ public class DocController {
 
     @PostMapping("/insert")
     public Doc save(@RequestBody Doc doc){
-        return docService.save(doc);
+        return docService.insert(doc);
     }
 
     @DeleteMapping("/delete/{id}")
     public int delete(@PathVariable String id){
-        return docService.delete(id);
+        return docService.deleteById(id);
     }
 
     @PutMapping("/update/id")
     public Doc update(@RequestBody Doc doc){
-        return docService.save(doc);
+        return docService.updateById(doc);
     }
 
     @GetMapping("/select/{id}")
     public Doc getOne(@PathVariable String id){
-        Doc doc = docService.getOne(id);
+        Doc doc = docService.selectById(id);
         return doc;
     }
 
     @PostMapping("/select/page/get")
-    public PageTable<Doc> searchString(@RequestBody BaseTable<String> baseTable){
-        return docService.searchString(baseTable);
+    public PageTable<Doc> selectByString(@RequestBody BaseTable<String> baseTable){
+        return docService.selectByString(baseTable);
     }
-
-
 }

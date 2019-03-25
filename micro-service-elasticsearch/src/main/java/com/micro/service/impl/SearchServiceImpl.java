@@ -89,18 +89,18 @@ public class SearchServiceImpl implements SearchService {
             }
 
             //部门权限查询
-            if(model.getDepPermission()!=null){
-                boolQueryBuilder.must(QueryBuilders.termQuery("depPermission",model.getDepPermission()));
+            if(model.getDepPermissions()!=null){
+                boolQueryBuilder.must(QueryBuilders.commonTermsQuery("depPermissions.keyword",model.getDepPermissions()));
             }
 
             //岗位权限查询
-            if(model.getPostPermission()!=null){
-                boolQueryBuilder.must(QueryBuilders.termQuery("postPermission",model.getPostPermission()));
+            if(model.getPostPermissions()!=null){
+                boolQueryBuilder.must(QueryBuilders.commonTermsQuery("postPermissions.keyword",model.getPostPermissions()));
             }
 
             //人员权限查询
-            if(model.getPersonPermission()!=null){
-                boolQueryBuilder.must(QueryBuilders.termQuery("personPermission",model.getPersonPermission()));
+            if(model.getPersonPermissions()!=null){
+                boolQueryBuilder.must(QueryBuilders.commonTermsQuery("personPermissions.keyword",model.getPersonPermissions()));
             }
         }
 
@@ -155,4 +155,5 @@ public class SearchServiceImpl implements SearchService {
     public PageTable<Institution> selectInstitutionByPage(BaseTable<Institution> institution) {
         return null;
     }
+
 }

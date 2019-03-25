@@ -4,6 +4,8 @@ import com.micro.api.elasticsearch.model.Institution;
 import com.micro.api.mysql.model.BaseTable;
 import com.micro.api.mysql.model.PageTable;
 
+import java.util.List;
+
 /**
  * Copyright (C),长安汽车金融有限公司
  * FileName:  com.micro.api.elasticsearch
@@ -16,13 +18,17 @@ import com.micro.api.mysql.model.PageTable;
  */
 public interface InstitutionService {
 
-    Institution save(Institution institution);
+    Institution insert(Institution institution);
 
-    int delete(String id);
+    Integer insertBatch(List<Institution> institutions);
 
-    Institution update(Institution institution);
+    Integer deleteById(String id);
 
-    Institution getOne(String id);
+    Integer deleteBatch(Institution institution);
 
-    PageTable<Institution> searchString(BaseTable<String> baseTable);
+    Institution updateById(Institution institution);
+
+    Institution selectById(String id);
+
+    PageTable<Institution> selectByString(BaseTable<String> baseTable);
 }

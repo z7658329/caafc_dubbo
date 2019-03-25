@@ -35,6 +35,9 @@ public class TbPdfPermission implements Serializable {
     @ApiModelProperty(value = "人员Id", example = "1")
     private String personId;
 
+    @ApiModelProperty(value = "权限类别：1:公开,2:部门，3:岗位，4:个人", example = "1")
+    private String permissionType;
+
     @ApiModelProperty(value = "状态", example = "0",dataType = "int")
     private Integer status;
 

@@ -7,13 +7,18 @@ import com.micro.api.mysql.model.BaseTable;
 import com.micro.api.mysql.model.PageTable;
 import com.micro.dao.DocRepository;
 import com.micro.util.TableUtil;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+
+import java.util.List;
 
 
 /**
@@ -33,29 +38,40 @@ public class DocServiceImpl implements DocService {
     private DocRepository docRepository;
 
     @Override
-    public Doc save(Doc doc){
+    public Doc insert(Doc doc) {
         return docRepository.save(doc);
     }
 
     @Override
-    public int delete(String id){
+    public Integer insertBatch(List<Doc> docs) {
+        docRepository.saveAll(docs);
+        return docs.size();
+    }
+
+    @Override
+    public Integer deleteById(String id) {
         docRepository.deleteById(id);
         return 0;
     }
 
     @Override
-    public Doc update(Doc doc){
+    public Integer deleteBatch(Doc doc) {
+        return null;
+    }
+
+    @Override
+    public Doc updateById(Doc doc) {
         return docRepository.save(doc);
     }
 
     @Override
-    public Doc getOne(String id){
+    public Doc selectById(String id) {
         Doc doc = docRepository.findById(id).get();
-       return doc;
+        return doc;
     }
 
     @Override
-    public PageTable<Doc> searchString(BaseTable<String> baseTable){
+    public PageTable<Doc> selectByString(BaseTable<String> baseTable) {
         Sort sort=new Sort(Sort.Direction.DESC,"pageNum");
         Pageable pageable = PageRequest.of(baseTable.getPageNum(), baseTable.getPageSize(),sort);
         QueryStringQueryBuilder builder = new QueryStringQueryBuilder(baseTable.getModel());

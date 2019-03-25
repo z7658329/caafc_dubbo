@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.Mapping;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,16 +56,16 @@ public class Doc implements Serializable {
     private String content;
 
     @ApiModelProperty(value = "部门权限 ", example = "1")
-    private List<String>depPermission;
+    private ArrayList<String> depPermissions;
 
     @ApiModelProperty(value = "岗位权限 ", example = "1")
-    private List<String>postPermission;
+    private ArrayList<String>postPermissions;
 
     @ApiModelProperty(value = "人员权限 ", example = "1")
-    private List<String>personPermission;
+    private ArrayList<String>personPermissions;
 
     @ApiModelProperty(value = "批注 ", example = "1")
-    private List<String>comments;
+    private ArrayList<String>comments;
 
     @ApiModelProperty(value = "效力级别", example = "0",dataType = "int")
     private Integer level;

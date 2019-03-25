@@ -29,28 +29,28 @@ public class InstitutionController {
 
     @PostMapping("/insert")
     public Institution save(@RequestBody Institution institution){
-        return institutionService.save(institution);
+        return institutionService.insert(institution);
     }
 
     @DeleteMapping("/delete/id")
     public int delete(@RequestParam String id){
-        return institutionService.delete(id);
+        return institutionService.deleteById(id);
     }
 
     @PutMapping("/update/id")
     public Institution update(@RequestBody Institution institution){
-        return institutionService.save(institution);
+        return institutionService.updateById(institution);
     }
 
     @GetMapping("/select/{id}")
     public Institution getOne(@PathVariable String id){
-        Institution institution = institutionService.getOne(id);
+        Institution institution = institutionService.selectById(id);
         return institution;
     }
 
     @PostMapping("/select/page/get")
     public PageTable<Institution> searchString(@RequestBody BaseTable<String> baseTable){
-        return institutionService.searchString(baseTable);
+        return institutionService.selectByString(baseTable);
     }
 
 

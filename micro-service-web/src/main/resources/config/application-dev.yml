@@ -9,6 +9,7 @@ dubbo:
     timeout: 5000
   consumer:
     timeout: 5000
+    retries: -1
   registry:
     address: zookeeper://10.5.2.74:2181
   monitor:

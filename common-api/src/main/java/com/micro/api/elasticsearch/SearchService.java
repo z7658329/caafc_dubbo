@@ -1,34 +1,27 @@
 package com.micro.api.elasticsearch;
 
 import com.micro.api.elasticsearch.model.Doc;
+import com.micro.api.elasticsearch.model.DocScore;
+import com.micro.api.elasticsearch.model.Institution;
 import com.micro.api.mysql.model.BaseTable;
 import com.micro.api.mysql.model.PageTable;
-
-import java.util.List;
+import com.micro.api.mysql.model.TbDepartment;
 
 /**
  * Copyright (C),长安汽车金融有限公司
- * FileName:  com.micro.api.elasticsearch
+ * FileName:  com.micro.api.elasticsearch.model
  * Author:   hhc
- * Date:     2019/3/6
+ * Date:     2019/3/20
  * Description:
  * History:
  * <author>          <time>          <version>          <desc>
  * 作者姓名           修改时间           版本号              描述
  */
-public interface DocService {
+public interface SearchService {
 
-    Doc insert(Doc doc);
+    PageTable<DocScore> selectDocByPage(BaseTable<Doc> doc);
 
-    Integer insertBatch(List<Doc> docs);
-
-    Integer deleteById(String id);
-
-    Integer deleteBatch(Doc doc);
-
-    Doc updateById(Doc doc);
-
-    Doc selectById(String id);
-
-    PageTable<Doc> selectByString(BaseTable<String> baseTable);
+    PageTable<Institution> selectInstitutionByPage(BaseTable<Institution> institution);
 }
+
+
