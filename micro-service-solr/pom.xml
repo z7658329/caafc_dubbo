@@ -9,8 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mciro-service-adapter</artifactId>
-
+    <artifactId>micro-service-solr</artifactId>
     <dependencies>
         <dependency>
             <artifactId>common-api</artifactId>
@@ -18,9 +17,8 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <artifactId>web-tool</artifactId>
-            <groupId>com.caafc.service</groupId>
-            <version>${project.version}</version>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-solr</artifactId>
         </dependency>
     </dependencies>
 

@@ -9,8 +9,9 @@
         <module>micro-service-mysql</module>
         <module>micro-service-elasticsearch</module>
         <module>micro-service-web</module>
-        <module>mciro-service-adapter</module>
+        <module>micro-service-adapter</module>
         <module>common-tool</module>
+        <module>micro-service-solr</module>
     </modules>
 
     <properties>
