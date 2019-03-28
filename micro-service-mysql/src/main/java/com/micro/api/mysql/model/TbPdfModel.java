@@ -55,7 +55,7 @@ public class TbPdfModel implements Serializable {
     @ApiModelProperty(value = "文件路径 ", example = "1")
     private String filePath;
 
-    @ApiModelProperty(value = "               ", example = "0",dataType = "int")
+    @ApiModelProperty(value = "效力级别", example = "0",dataType = "int")
     private Integer level;
 
 
