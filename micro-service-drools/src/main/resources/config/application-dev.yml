@@ -1,0 +1,24 @@
+dubbo:
+  application:
+    name: elasticsearch
+    version: 1.0.0
+  protocol:
+    name: dubbo
+    port: 20881
+  provider:
+    timeout: 5000
+  consumer:
+    timeout: 5000
+    retries: -1
+  registry:
+    address: zookeeper://10.5.2.74:2181
+  monitor:
+    address: 10.5.2.27:7070
+server:
+  port: 8105
+
+logger:
+  redis:
+    host: 10.5.2.56
+  path: /home/jolin/log
+

@@ -12,6 +12,7 @@
         <module>micro-service-adapter</module>
         <module>common-tool</module>
         <module>micro-service-solr</module>
+        <module>micro-service-drools</module>
     </modules>
 
     <properties>
