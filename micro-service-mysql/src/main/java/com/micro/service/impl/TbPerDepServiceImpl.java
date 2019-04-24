@@ -2,9 +2,9 @@ package com.micro.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.micro.api.mysql.TbPerDepService;
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
-import com.micro.api.mysql.model.TbPerDep;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
+import com.micro.api.mongodb.model.TbPerDep;
 import com.micro.dao.TbPerDepJpa;
 import com.micro.util.TableUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Date;
 import java.util.List;
 
 /**

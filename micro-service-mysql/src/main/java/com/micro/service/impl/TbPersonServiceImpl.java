@@ -2,9 +2,9 @@ package com.micro.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.micro.api.mysql.TbPersonService;
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
-import com.micro.api.mysql.model.TbPerson;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
+import com.micro.api.mongodb.model.TbPerson;
 import com.micro.dao.TbPersonJpa;
 import com.micro.util.TableUtil;
 import lombok.extern.slf4j.Slf4j;

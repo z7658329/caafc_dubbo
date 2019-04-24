@@ -1,15 +1,8 @@
 package com.micro.util;
 
 
-import com.micro.api.mysql.model.PageTable;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import com.micro.api.mongodb.model.PageTable;
 import org.springframework.data.domain.Page;
-
-import java.beans.PropertyDescriptor;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * Copyright (C),长安汽车金融有限公司

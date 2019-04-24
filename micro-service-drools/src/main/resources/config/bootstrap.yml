@@ -1,5 +1,8 @@
 spring:
   application:
     name: drools
+  cloud:
+    config:
+      enabled: false
   profiles:
     active: dev

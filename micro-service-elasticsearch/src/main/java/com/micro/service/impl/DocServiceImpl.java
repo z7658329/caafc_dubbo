@@ -3,20 +3,16 @@ package com.micro.service.impl;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.micro.api.elasticsearch.DocService;
 import com.micro.api.elasticsearch.model.Doc;
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
 import com.micro.dao.DocRepository;
 import com.micro.util.TableUtil;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
-import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.index.query.TermsQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 
 import java.util.List;
 
@@ -74,8 +70,7 @@ public class DocServiceImpl implements DocService {
     public PageTable<Doc> selectByString(BaseTable<String> baseTable) {
         Sort sort=new Sort(Sort.Direction.DESC,"pageNum");
         Pageable pageable = PageRequest.of(baseTable.getPageNum(), baseTable.getPageSize(),sort);
-        QueryStringQueryBuilder builder = new QueryStringQueryBuilder(baseTable.getModel());
-        Page<Doc> page = docRepository.search(builder,pageable);
+        Page<Doc> page = docRepository.findAll(pageable);
         return TableUtil.copyTableList(page);
     }
 }

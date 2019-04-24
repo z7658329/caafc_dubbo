@@ -13,6 +13,7 @@
         <module>common-tool</module>
         <module>micro-service-solr</module>
         <module>micro-service-drools</module>
+        <module>micro-service-mongodb</module>
     </modules>
 
     <properties>

@@ -13,8 +13,8 @@ package com.micro.controller;
 
 import com.micro.api.elasticsearch.DocService;
 import com.micro.api.elasticsearch.model.Doc;
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

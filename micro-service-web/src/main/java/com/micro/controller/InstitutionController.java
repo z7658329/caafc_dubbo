@@ -14,9 +14,8 @@ package com.micro.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.api.elasticsearch.InstitutionService;
 import com.micro.api.elasticsearch.model.Institution;
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

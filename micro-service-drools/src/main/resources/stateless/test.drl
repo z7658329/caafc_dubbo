@@ -1,0 +1,13 @@
+package stateless
+
+import com.micro.model.Applicant
+
+rule "Applicant was made this year"
+salience 1
+when
+    $a : Applicant( age < 20 )
+then
+    $a.setAge($a.getAge()+1);
+    System.out.println("20:"+$a.getAge());
+    $a.setValid( false );
+end

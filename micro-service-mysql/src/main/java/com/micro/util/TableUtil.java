@@ -1,19 +1,14 @@
 package com.micro.util;
 
 
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
 import org.springframework.data.domain.Page;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.beans.PropertyDescriptor;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

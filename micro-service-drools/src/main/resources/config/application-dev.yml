@@ -22,3 +22,8 @@ logger:
     host: 10.5.2.56
   path: /home/jolin/log
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: env,refresh

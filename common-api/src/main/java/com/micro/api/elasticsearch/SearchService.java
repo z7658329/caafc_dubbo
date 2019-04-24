@@ -3,9 +3,8 @@ package com.micro.api.elasticsearch;
 import com.micro.api.elasticsearch.model.Doc;
 import com.micro.api.elasticsearch.model.DocScore;
 import com.micro.api.elasticsearch.model.Institution;
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
-import com.micro.api.mysql.model.TbDepartment;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
 
 /**
  * Copyright (C),长安汽车金融有限公司

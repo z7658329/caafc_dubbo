@@ -7,7 +7,7 @@ import com.micro.api.elasticsearch.InstitutionService;
 import com.micro.api.elasticsearch.model.Doc;
 import com.micro.api.elasticsearch.model.Institution;
 import com.micro.api.mysql.TbPdfModelService;
-import com.micro.api.mysql.model.TbPdfModel;
+import com.micro.api.mongodb.model.TbPdfModel;
 import com.micro.api.web.PdfService;
 import com.micro.api.web.model.request.PdfModel;
 import com.micro.response.global.BaseResponse;

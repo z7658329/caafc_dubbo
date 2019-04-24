@@ -1,0 +1,15 @@
+package stateless
+
+import com.micro.model.Applicant
+
+rule "Is of valid age"
+salience 0
+when
+    $a : Applicant( age < 18 )
+then
+    $a.setAge($a.getAge()+1);
+    System.out.println("18:"+$a.getAge());
+    $a.setValid( false );
+end
+
+

@@ -1,8 +1,8 @@
 package com.micro.api.mysql;
 
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
-import com.micro.api.mysql.model.TbPerDep;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
+import com.micro.api.mongodb.model.TbPerDep;
 
 import java.util.List;
 

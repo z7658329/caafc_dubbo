@@ -11,11 +11,10 @@ package com.micro.controller;
  * 作者姓名           修改时间           版本号              描述
  */
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.micro.api.elasticsearch.InstitutionService;
 import com.micro.api.elasticsearch.model.Institution;
-import com.micro.api.mysql.model.BaseTable;
-import com.micro.api.mysql.model.PageTable;
+import com.micro.api.mongodb.model.BaseTable;
+import com.micro.api.mongodb.model.PageTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
