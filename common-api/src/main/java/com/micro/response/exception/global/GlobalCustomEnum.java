@@ -8,7 +8,7 @@ package com.micro.response.exception.global;
 public enum GlobalCustomEnum implements ExceptionInterface {
 
     SUCCESS(1111, "unknown"),
-    NOT_FOUND(2222, "service not found");
+    NOT_FOUND(2222, "netty not found");
 
 
     private Integer status;

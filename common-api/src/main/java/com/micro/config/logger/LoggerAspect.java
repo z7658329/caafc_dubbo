@@ -8,14 +8,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -79,7 +78,8 @@ public class LoggerAspect {
         MDC.put("requestPath",requestPath);
         MDC.put("method",method);
         MDC.put("IP",LogIpConfig.getIp());
-        log.info("========>http_request  requestPath:{},userId:{},code:{},channelId:{},method:{},requestParams:{}", requestPath,userId, code, channelId,   method, requestParams);
+        int random=new Random().nextInt(100000);
+        log.info("========>http_request{}  requestPath:{},userId:{},code:{},channelId:{},method:{},requestParams:{}", random,requestPath,userId, code, channelId,   method, requestParams);
 
         long start = System.currentTimeMillis();
         Object result = joinPoint.proceed();
@@ -90,7 +90,7 @@ public class LoggerAspect {
         if(resultStr.length()> paramSize){
             resultStr = resultStr.substring(0, viewSize) + seg + resultStr.substring(resultStr.length() - viewSize);
         }
-        log.info("========>http_response:{},userId:{},cost:{}ms",resultStr, userId,cost);
+        log.info("========>http_response{} {},userId:{},cost:{}ms",random,resultStr, userId,cost);
         MDC.clear();
         return result;
     }

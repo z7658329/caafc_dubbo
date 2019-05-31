@@ -26,7 +26,7 @@ import static com.micro.util.TableUtil.getUpdateByObject;
 
 /**
  * Copyright (C),长安汽车金融有限公司
- * FileName:  com.micro.service.impl
+ * FileName:  com.micro.netty.impl
  * Author:   hhc
  * Date:     2019/4/12
  * Description:

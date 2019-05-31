@@ -1,29 +1,34 @@
 package com.micro.util;
+
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HeaderElement;
-import org.apache.http.HttpEntity;
+import org.apache.http.*;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
+import java.io.InterruptedIOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -46,7 +51,7 @@ public class HttpUtils {
     static {
         try {
             SSLContext sslcontext = createIgnoreVerifySSL();
-            // 设置协议http和https对应的处理socket链接工厂的对象
+            // 设置连接池 协议http和https对应的处理socket链接工厂的对象
             Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
                     .register("http", PlainConnectionSocketFactory.INSTANCE)
                     .register("https", new SSLConnectionSocketFactory(sslcontext))
@@ -54,40 +59,74 @@ public class HttpUtils {
             cm = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
             cm.setMaxTotal(1000);
             cm.setDefaultMaxPerRoute(100);
-            HttpClientBuilder clientBuilder = HttpClients.custom();
-            //长连接
-            clientBuilder.setKeepAliveStrategy((httpResponse, httpContext) -> {
-                BasicHeaderElementIterator it = new BasicHeaderElementIterator(httpResponse.headerIterator("Keep-Alive"));
-                while(true) {
-                    String param;
-                    String value;
-                    do {
-                        do {
-                            if (!it.hasNext()) {
-                                return -1L;
-                            }
-                            HeaderElement he = it.nextElement();
-                            param = he.getName();
-                            value = he.getValue();
-                        } while(value == null);
-                    } while(!param.equalsIgnoreCase("timeout"));
 
-                    try {
-                        return Long.parseLong(value) * 1000L;
-                    } catch (NumberFormatException e) {
-                        log.error(LG.E(),e);
+            //超时设置
+            RequestConfig requestConfig=RequestConfig.custom().setConnectTimeout(5000).setSocketTimeout(1000).setConnectionRequestTimeout(1000).build();
+
+            //长连接
+            ConnectionKeepAliveStrategy myStrategy = (response, context) -> {
+                HeaderElementIterator it = new BasicHeaderElementIterator
+                        (response.headerIterator(HTTP.CONN_KEEP_ALIVE));
+                while (it.hasNext()) {
+                    HeaderElement he = it.nextElement();
+                    String param = he.getName();
+                    String value = he.getValue();
+                    if (value != null && param.equalsIgnoreCase
+                            ("timeout")) {
+                        return Long.parseLong(value) * 1000;
                     }
                 }
-            });
-            client = clientBuilder.setConnectionManager(cm).build();
-        } catch (NoSuchAlgorithmException e) {
-            log.error(LG.E(),e);
-        } catch (KeyManagementException e) {
-            log.error(LG.E(),e);
-        } catch (NoSuchProviderException e) {
+                return 60 * 1000;//如果没有约定，则默认定义时长为60s
+            };
+            //请求失败时,进行请求重试
+            HttpRequestRetryHandler handler = (e, i, httpContext) -> {
+                if (i > 3){
+                    //重试超过3次,放弃请求
+                    log.error("retry has more than 3 time, give up request");
+                    return false;
+                }
+                if (e instanceof NoHttpResponseException){
+                    //服务器没有响应,可能是服务器断开了连接,应该重试
+                    log.error("receive no response from server, retry");
+                    return true;
+                }
+                if (e instanceof SSLHandshakeException){
+                    // SSL握手异常
+                    log.error("SSL hand shake exception");
+                    return false;
+                }
+                if (e instanceof InterruptedIOException){
+                    //超时
+                    log.error("InterruptedIOException");
+                    return false;
+                }
+                if (e instanceof UnknownHostException){
+                    // 服务器不可达
+                    log.error("server host unknown");
+                    return false;
+                }
+                if (e instanceof ConnectTimeoutException){
+                    // 连接超时
+                    log.error("Connection Time out");
+                    return false;
+                }
+                if (e instanceof SSLException){
+                    log.error("SSLException");
+                    return false;
+                }
+
+                HttpClientContext context = HttpClientContext.adapt(httpContext);
+                HttpRequest request = context.getRequest();
+                if (!(request instanceof HttpEntityEnclosingRequest)){
+                    //如果请求不是关闭连接的请求
+                    return true;
+                }
+                return false;
+            };
+            client =  HttpClients.custom().setConnectionManager(cm).setKeepAliveStrategy(myStrategy).setDefaultRequestConfig(requestConfig).setRetryHandler(handler).build();
+        } catch (Exception e) {
             log.error(LG.E(),e);
         }
-
     }
 
 
@@ -114,7 +153,7 @@ public class HttpUtils {
             get = new HttpGet(url);
             if (null != header) {
                 for (Map.Entry<String, Object> entry : header.entrySet()) {
-                    get.setHeader(entry.getKey(), entry.getValue() + "");
+                    get.setHeader(entry.getKey(), entry.getValue().toString());
                 }
             }
             respStr = execute(get);
@@ -152,13 +191,16 @@ public class HttpUtils {
         try {
             url = getParamUrl(url, urlParam);
             post = new HttpPost(url);
-            StringEntity entity = new StringEntity(content, UTF8);
-            post.setHeader("Content-Type", "application/json;charset=utf-8");
-            post.setHeader("Accept", "application/json");
-            post.setEntity(entity);
+            StringEntity entity;
+            if(content!=null){
+                entity = new StringEntity(content, UTF8);
+                post.setEntity(entity);
+            }
+            post.addHeader("Content-Type", "application/json;charset=utf-8");
+            post.addHeader("Accept", "application/json");
             if (header != null) {
                 for (Map.Entry<String, Object> entry : header.entrySet()) {
-                    post.setHeader(entry.getKey(), entry.getValue() + "");
+                    post.addHeader(entry.getKey(), entry.getValue().toString());
                 }
             }
             respStr = execute(post);
@@ -206,10 +248,11 @@ public class HttpUtils {
         String entityStr = null;
         try {
             response = client.execute(uriRequest);
+            //if(response.getStatusLine().getStatusCode()==HttpStatus.SC_OK)
             HttpEntity entity = response.getEntity();
             entityStr = EntityUtils.toString(entity, UTF8);
         } catch (Exception e) {
-            log.error(LG.E(),e);
+            return e.getMessage();
         }
         return entityStr;
     }
