@@ -3,7 +3,7 @@ server:
 spring:
   data:
     elasticsearch:
-      cluster-high-nodes: 10.5.2.74:9300
+      cluster-high-nodes: 10.5.2.84:9200
   kafka:
     bootstrap-servers: 10.5.2.84:9092
     producer:

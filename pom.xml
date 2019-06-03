@@ -15,6 +15,7 @@
         <module>micro-service-drools</module>
         <module>micro-service-mongodb</module>
         <module>micro-service-netty</module>
+        <module>micro-service-spark</module>
     </modules>
 
     <properties>

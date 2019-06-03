@@ -1,0 +1,17 @@
+server:
+  port: 9999
+spark:
+  appName: test
+  master: spark://10.5.2.74:7077
+  es:
+    autoCreate: true
+    nodes: 10.5.2.84
+    port: 9200
+    wanOnly: true
+kafka:
+  topic:
+    groupId: groupId
+    topicNames: test
+
+
+
