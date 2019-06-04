@@ -9,12 +9,12 @@ import com.micro.socket.ElasticService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -38,15 +38,14 @@ public class DispatcherService{
     private KafkaProducerService kafkaProducerService;
     @Autowired
     private ElasticService elasticService;
-    @Autowired
-    private KafkaConfig config;
-
 
     private LinkedBlockingQueue<HttpRequest> queue=new LinkedBlockingQueue<>();
     private SimpleDateFormat f = new SimpleDateFormat("yyyyMM");
     private SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
     private String index="weblog";
     private String timestamp="@timestamp";
+    private String type="type";
+
 
     @PostConstruct
     public void init() throws Exception {
@@ -55,22 +54,30 @@ public class DispatcherService{
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                   while (true){
-                       HttpRequest httpRequest=null;
+                   while(true){
+                       HttpRequest httpRequest = null;
                        try {
                            httpRequest=queue.take();
-                       } catch (InterruptedException e) {
-                           log.info(e.toString());
+                           Date now;
+                           JSONObject jsonObject=JSONObject.parseObject(httpRequest.getContent());
+                           if(jsonObject.containsKey(timestamp)){
+                               now =new Date(jsonObject.getLong(timestamp));
+                           }else {
+                               now=new Date();
+                           }
+                           jsonObject.put(timestamp,simpleDateFormat.format(now));
+                           String content=jsonObject.toJSONString();
+                           kafkaProducerService.sendMessage(index,content);
+                           String time=f.format(now);
+                           elasticService.insert(index+time,"doc",null,content);
+                       } catch (Exception e) {
+                           if(null!=httpRequest){
+                               log.info("Thread content:{} Exception:",httpRequest.getContent(),e);
+                           }else {
+                               log.info("Thread Exception:",e);
+                           }
                        }
-                       Date now =new Date();
-                       JSONObject jsonObject=JSONObject.parseObject(httpRequest.getContent());
-                       jsonObject.put(timestamp,simpleDateFormat.format(now));
-                       String content=jsonObject.toJSONString();
-                       kafkaProducerService.sendMessage(index,content);
-                       String time=f.format(now);
-                       elasticService.insert(index+time,"doc",null,content);
                    }
-
                 }
             }).start();
         }
@@ -80,7 +87,4 @@ public class DispatcherService{
         return queue;
     }
 
-    public void setQueue(LinkedBlockingQueue<HttpRequest> queue) {
-        this.queue = queue;
-    }
 }

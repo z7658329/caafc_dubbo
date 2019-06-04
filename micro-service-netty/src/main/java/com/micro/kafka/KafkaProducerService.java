@@ -9,7 +9,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 
 @Component
@@ -28,7 +27,7 @@ public class KafkaProducerService {
         try {
             kafkaTemplate.send(topic, data);
         } catch (Exception e) {
-            log.info(e.toString());
+            log.info("topic:{} data:{} Exception:",topic,data,e);
         }
     }
 
