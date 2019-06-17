@@ -1,5 +1,6 @@
 package com.micro.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -19,6 +20,7 @@ import javax.annotation.PostConstruct;
  * 作者姓名           修改时间           版本号              描述
  */
 @Component
+@Slf4j
 public class ElasticSearchReader {
 
     @Autowired
@@ -31,6 +33,7 @@ public class ElasticSearchReader {
         dataset = sparkSession.sqlContext().read().format("org.elasticsearch.spark.sql").option("inferSchema", "true").load("weblog*/type");
         dataset.createOrReplaceTempView("sessionTable");
         dataset.show();
+        log.info("initElasticSearch==========");
     }
 
     public Dataset<Row> getDataset() {

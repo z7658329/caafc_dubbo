@@ -34,7 +34,7 @@ public class TestController {
     @GetMapping("/getTopN")
     List<String> getTopN(@RequestParam String col,@RequestParam Integer num){
         Dataset<Row> dataset= elasticSearchReader.getDataset().select(col);
-        List<String> list= (List<String>) dataset.take(num);
+        List<String> list= (List<String>) dataset.collect();
         return list;
     }
 

@@ -16,6 +16,7 @@
         <module>micro-service-mongodb</module>
         <module>micro-service-netty</module>
         <module>micro-service-spark</module>
+        <module>micro-service-word</module>
     </modules>
 
     <properties>

@@ -34,7 +34,7 @@ public class SparkContextBean {
     @Bean
     @ConditionalOnMissingBean(SparkConf.class)
     public SparkConf sparkConf() throws Exception {
-	   SparkConf conf = new SparkConf().setAppName(appName).setMaster(master);
+	   SparkConf conf = new SparkConf().setAppName(appName);
 	   conf.set("es.index.auto.create",autoCreate);
 	   conf.set("es.nodes",nodes);
 	   conf.set("es.port",port);
