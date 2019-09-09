@@ -8,7 +8,7 @@ public class DateUtils {
 	/**
 	 * 默认日期格式
 	 */
-		public static String DEFAULT_FORMAT = "YYYY-MM-DD HH:MM:SS";
+		public static String DEFAULT_FORMAT = "yyyyMMdd HHmmss zzz";
 
 		public static void main(String[] args) {
             System.out.println(getDate());
